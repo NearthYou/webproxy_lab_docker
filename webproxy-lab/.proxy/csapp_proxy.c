@@ -948,39 +948,28 @@ ssize_t Rio_readlineb(rio_t *rp, void *usrbuf, size_t maxlen)
  */
 /* $begin open_clientfd */
 int open_clientfd(char *hostname, char *port) {
-    int clientfd, rc;
+    int clientfd;
     struct addrinfo hints, *listp, *p;
 
-    /* Get a list of potential server addresses */
     memset(&hints, 0, sizeof(struct addrinfo));
-    hints.ai_socktype = SOCK_STREAM;  /* Open a connection */
-    hints.ai_flags = AI_NUMERICSERV;  /* ... using a numeric port arg. */
-    hints.ai_flags |= AI_ADDRCONFIG;  /* Recommended for connections */
-    if ((rc = getaddrinfo(hostname, port, &hints, &listp)) != 0) {
-        fprintf(stderr, "getaddrinfo failed (%s:%s): %s\n", hostname, port, gai_strerror(rc));
-        return -2;
-    }
-  
-    /* Walk the list for one that we can successfully connect to */
+    hints.ai_socktype = SOCK_STREAM;
+    hints.ai_flags = AI_NUMERICSERV;
+    hints.ai_flags |= AI_ADDRCONFIG;
+    Getaddrinfo(hostname, port, &hints, &listp);
+
     for (p = listp; p; p = p->ai_next) {
-        /* Create a socket descriptor */
-        if ((clientfd = socket(p->ai_family, p->ai_socktype, p->ai_protocol)) < 0) 
-            continue; /* Socket failed, try the next */
+        if ((clientfd = socket(p->ai_family, p->ai_socktype, p->ai_protocol)) < 0)
+            continue;
 
-        /* Connect to the server */
-        if (connect(clientfd, p->ai_addr, p->ai_addrlen) != -1) 
-            break; /* Success */
-        if (close(clientfd) < 0) { /* Connect failed, try another */  //line:netp:openclientfd:closefd
-            fprintf(stderr, "open_clientfd: close failed: %s\n", strerror(errno));
-            return -1;
-        } 
-    } 
+        if (connect(clientfd, p->ai_addr, p->ai_addrlen) != -1)
+            break;
+        Close(clientfd);
+    }
 
-    /* Clean up */
-    freeaddrinfo(listp);
-    if (!p) /* All connects failed */
+    Freeaddrinfo(listp);
+    if (!p)
         return -1;
-    else    /* The last connect succeeded */
+    else
         return clientfd;
 }
 /* $end open_clientfd */
