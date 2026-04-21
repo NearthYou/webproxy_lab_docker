@@ -11,14 +11,22 @@ int main(void)
   int n1 = 0, n2 = 0;
 
   /* Extract the two arguments */
-  if ((buf = getenv("QUERY_STRING")) != NULL)
-  {
+  // if ((buf = getenv("QUERY_STRING")) != NULL)
+  // {
+  //   p = strchr(buf, '&');
+  //   *p = '\0';
+  //   strcpy(arg1, buf);
+  //   strcpy(arg2, p + 1);
+  //   n1 = atoi(strchr(arg1, '=') + 1);
+  //   n2 = atoi(strchr(arg2, '=') + 1);
+  // }
+  if ((buf = getenv("QUERY_STRING")) != NULL) {
     p = strchr(buf, '&');
     *p = '\0';
-    strcpy(arg1, buf);
-    strcpy(arg2, p + 1);
-    n1 = atoi(strchr(arg1, '=') + 1);
-    n2 = atoi(strchr(arg2, '=') + 1);
+    strcpy(arg1, buf);        // arg1 = "123"
+    strcpy(arg2, p + 1);      // arg2 = "456"
+    n1 = atoi(arg1);          // '=' 찾지 말고 바로 atoi
+    n2 = atoi(arg2);
   }
 
   /* Make the response body */
