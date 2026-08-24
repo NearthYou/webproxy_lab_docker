@@ -56,3 +56,10 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# Local C binaries
+webproxy-lab/echoclient
+webproxy-lab/echoserveri
+webproxy-lab/proxy
+webproxy-lab/tiny/tiny
+webproxy-lab/tiny/cgi-bin/adder
