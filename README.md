@@ -102,4 +102,4 @@ curl -f 'http://127.0.0.1:8000/cgi-bin/adder?1&2'
 ## 관련 프로젝트
 
 - [MemoryAllocator](https://github.com/NearthYou/MemoryAllocator): C memory와 pointer 관리 구현
-- [MiniDBMS](https://github.com/NearthYou/MiniDBMS): socket server와 thread pool을 DB API로 확장한 프로젝트
+- [ConcurrentSQLServer](https://github.com/NearthYou/ConcurrentSQLServer): socket server와 thread pool을 DB API로 확장한 프로젝트
